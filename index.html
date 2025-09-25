@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CogiteQ – Strategic Marketing Plan (Executive Report)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1"></script>
+  <style>
+:root{
+  --bg:#f9fafb; --text:#1b1f24; --muted:#6b7280; --primary:#1d4ed8; --primary2:#0ea5e9;
+  --card:#ffffff; --border:#e5e7eb; --accent:#111827;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;line-height:1.5}
+header.hero{background:linear-gradient(120deg, var(--primary), var(--primary2));color:#fff;padding:56px 16px;position:sticky;top:0;z-index:10}
+header.hero .wrap{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0 0 8px;font-size:32px}
+h2{color:var(--accent);margin:0 0 12px;font-size:22px}
+p.lead{opacity:.95;margin:8px 0 0}
+.section{max-width:1100px;margin:0 auto;padding:24px 16px;border-bottom:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi .card h3{margin:0;font-size:12px;color:var(--muted);letter-spacing:.02em;text-transform:uppercase}
+.kpi .card .big{font-size:22px;font-weight:700;margin-top:4px}
+.small{font-size:12px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+th,td{border-bottom:1px solid var(--border);padding:8px 10px;text-align:left}
+th{background:#f3f4f6;font-weight:600}
+details summary{cursor:pointer;font-weight:600}
+.stickybar{position:sticky;top:0;background:#ffffffcc;backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:8px 16px;z-index:9}
+.pills{display:flex;gap:8px}
+.pills button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:600}
+.pills button.active{background:#111827;border-color:#111827;color:#fff}
+.chart{width:100%;height:320px}
+.gantt-btn{background:#fff;color:#111827;font-weight:700;padding:8px 14px;border-radius:10px;border:2px solid #111827;text-decoration:none;white-space:nowrap}
+.gantt-btn:hover{background:#111827;color:#fff}
+@media(max-width:800px){
+  .grid{grid-template-columns:1fr}
+  .kpi{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div>
+        <h1>CogiteQ — Strategic Marketing Plan</h1>
+        <p class="lead">Executive presentation mapped to Gantt scenarios (Normal, Lean, Ultra‑lean), scrollable and interactive.</p>
+      </div>
+      <a id="ganttLink" class="gantt-btn" href="#" target="_blank" rel="noopener">View Full Gantt</a>
+    </div>
+  </header>
+
+  <div class="stickybar">
+    <div class="pills">
+      <button class="active" onclick="document.getElementById('exec').scrollIntoView({behavior:'smooth'})">Executive Summary</button>
+      <button onclick="document.getElementById('normal').scrollIntoView({behavior:'smooth'})">Normal</button>
+      <button onclick="document.getElementById('lean').scrollIntoView({behavior:'smooth'})">Lean</button>
+      <button onclick="document.getElementById('ultra').scrollIntoView({behavior:'smooth'})">Ultra‑lean</button>
+      <button onclick="document.getElementById('compare').scrollIntoView({behavior:'smooth'})">Comparatives</button>
+      <button onclick="document.getElementById('stake').scrollIntoView({behavior:'smooth'})">Stakeholders</button>
+    </div>
+  </div>
+
+  <section id="exec" class="section">
+    <h2>Executive Summary</h2>
+    <p><strong>Strategic overview:</strong> Sequence engineering to ship Sigma‑1 with high reliability, validate value with targeted pilots (auction houses, museums, insurers/logistics), and build an anonymised data revenue stream. Marketing/branding spend is staged outside the engineering cap to preserve runway and CAC efficiency.</p>
+    <div class="grid">
+      <div class="card"><canvas id="totals" class="chart"></canvas></div>
+      <div class="card"><canvas id="roi" class="chart"></canvas></div>
+    </div>
+    <div class="kpi" style="margin-top:12px;">
+      <div class="card"><h3>Year‑1 Payers (N/L/U)</h3><div class="big" id="kpiPayers"></div><div class="small">Conservative, tied to pilot conversion</div></div>
+      <div class="card"><h3>ARPA €/mo (N/L/U)</h3><div class="big" id="kpiARPA"></div><div class="small">Intro pricing for enterprise reliability</div></div>
+      <div class="card"><h3>Churn % (N/L/U)</h3><div class="big" id="kpiChurn"></div><div class="small">Stabilises with OTA + support</div></div>
+      <div class="card"><h3>Δ Rev – Budget (N/L/U)</h3><div class="big" id="kpiDelta"></div><div class="small">Year‑1 revenue minus scenario budget</div></div>
+    </div>
+  </section>
+
+  <section id="normal" class="section">
+    <h2>Scenario A — Normal</h2>
+    <details open><summary>Timeline &amp; Milestones</summary>
+      <div class="card"><canvas id="ganttNormal" class="chart" style="height:360px"></canvas></div>
+    </details>
+    <div class="grid" style="margin-top:8px;">
+      <div class="card"><canvas id="budNormal" class="chart"></canvas></div>
+      <div class="card"><canvas id="riskNormal" class="chart"></canvas></div>
+    </div>
+    <p class="small">Assumptions: broader team parallelism; partial FTE months shown in the budget math below.</p>
+  </section>
+
+  <section id="lean" class="section">
+    <h2>Scenario B — Lean</h2>
+    <details open><summary>Timeline &amp; Milestones</summary>
+      <div class="card"><canvas id="ganttLean" class="chart" style="height:360px"></canvas></div>
+    </details>
+    <div class="grid" style="margin-top:8px;">
+      <div class="card"><canvas id="budLean" class="chart"></canvas></div>
+      <div class="card"><canvas id="riskLean" class="chart"></canvas></div>
+    </div>
+    <p class="small">Assumptions: 8 consolidated roles incl. Quantum (fractional). Fits ≈€193,400 engineering cap; GTM/branding outside.</p>
+  </section>
+
+  <section id="ultra" class="section">
+    <h2>Scenario C — Ultra‑lean</h2>
+    <details open><summary>Timeline &amp; Milestones</summary>
+      <div class="card"><canvas id="ganttUltra" class="chart" style="height:360px"></canvas></div>
+    </details>
+    <div class="grid" style="margin-top:8px;">
+      <div class="card"><canvas id="budUltra" class="chart"></canvas></div>
+      <div class="card"><canvas id="riskUltra" class="chart"></canvas></div>
+    </div>
+    <p class="small">Assumptions: 5 merged tracks; advisory Quantum; fractional Compliance. Engineering focus with minimal management overhead.</p>
+  </section>
+
+  <section id="compare" class="section">
+    <h2>Comparative Analysis</h2>
+    <div class="grid">
+      <div class="card"><canvas id="stackCompare" class="chart"></canvas></div>
+      <div class="card"><canvas id="spend" class="chart"></canvas></div>
+    </div>
+  </section>
+
+  <section id="stake" class="section">
+    <h2>Key Stakeholder Information</h2>
+    <div class="grid">
+      <div class="card">
+        <table>
+          <thead><tr><th>Scenario</th><th>Total Budget (€)</th><th>Core Roles</th></tr></thead>
+          <tbody>
+            <tr><td>Normal</td><td id="totN"></td><td>HW, FW, Mobile, Cloud, QA, Compliance, GTM, Support</td></tr>
+            <tr><td>Lean</td><td id="totL"></td><td>Embedded RF, Firmware/IoT, Cloud/Blockchain, Mobile/UX, QA/Field, Compliance/Cert, BizDev/Partnerships, Quantum</td></tr>
+            <tr><td>Ultra‑lean</td><td id="totU"></td><td>Embedded (RF+FW), Product Software, QA/Field & Ops, Compliance (frac.), Quantum (adv.)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Critical Path</th><th>Dependency</th><th>Mitigation</th></tr></thead>
+          <tbody>
+            <tr><td>Embedded OTA + Power</td><td>Final RF layout</td><td>Prototype sprints + early DFM</td></tr>
+            <tr><td>Anchoring API</td><td>Firmware event schema</td><td>Contract‑first API + mocks</td></tr>
+            <tr><td>Pilots</td><td>QA matrices complete</td><td>Beta gates + rollback plan</td></tr>
+            <tr><td>Compliance</td><td>Pentest & DPIA</td><td>Pre‑book fractional specialist</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // --- Smart Gantt link: local vs. web ---
+    (function(){
+      const localURL = "file:///home/francesco/Downloads/SIGMA1_Gantt_24M_DualScenario.html";
+      const webURL   = "SIGMA1_Gantt_24M_DualScenario.html";
+      const a = document.getElementById('ganttLink');
+      a.href = (location.protocol === 'file:' ? localURL : webURL);
+      a.title = (location.protocol === 'file:' ? 'Open local Gantt file' : 'Open repository Gantt file');
+    })();
+
+    const normalBudget = {"Hardware": 44000, "Firmware": 41600, "Mobile": 50000, "Cloud/Blockchain": 46800, "RF/Security": 15600, "QA/Test": 12600, "Pilots/Field": 19000, "Compliance": 24000, "Power": 15000, "Industrial": 15000, "Cloud/DevOps": 20800, "Frontend/Backend": 20000, "BizDev": 27000, "Partnerships": 21500, "Marketing": 28800, "Support/CRM": 10500, "Software/Data": 24000, "Data/Privacy": 14400, "Data Biz": 12600};
+    const leanBudget   = {"Embedded RF": 37800, "Firmware/IoT": 36400, "Cloud/Blockchain": 33800, "Mobile/UX": 26400, "QA/Field": 15200, "Compliance/Cert": 16800, "BizDev/Partnerships": 18000, "Quantum Security": 9000};
+    const ultraBudget  = {"Embedded Systems (RF+FW)": 57000, "Product Software (Mobile+Cloud)": 42000, "QA/Field & Ops": 18000, "Compliance/Cert (fractional)": 18200, "Quantum Security (advisory)": 9750};
+    const totals = { Normal: 463200, Lean: 193400, Ultra: 144950 };
+
+    const kpis  = {"Normal": {"Pilots Won": 8, "Payers in Year 1": 18, "Churn %": 8, "ARPA \u20ac/mo": 1800}, "Lean": {"Pilots Won": 5, "Payers in Year 1": 12, "Churn %": 10, "ARPA \u20ac/mo": 1700}, "Ultra": {"Pilots Won": 3, "Payers in Year 1": 8, "Churn %": 12, "ARPA \u20ac/mo": 1600}};
+    const roi   = {"Normal": 324000, "Lean": 204000, "Ultra": 128000};
+
+    const normalTasks = [["HW Miniaturisation + RF", 1, 8, "Hardware"], ["Firmware OTA & IMU", 1, 8, "Firmware"], ["Mobile Apps (iOS+Android)", 2, 10, "Mobile"], ["Anchoring API + Data Model", 4, 9, "Cloud/Blockchain"], ["Anti\u2011jamming Feasibility", 4, 8, "RF/Security"], ["QA & Lab Validation", 9, 11, "QA/Test"], ["Controlled Pilots", 10, 14, "Pilots/Field"], ["GDPR/DPIA + CE Docs", 10, 18, "Compliance"], ["Energy Optimisation", 9, 12, "Power"], ["Industrial Design + DFM", 15, 17, "Industrial"], ["Cloud Hardening + SLAs", 15, 18, "Cloud/DevOps"], ["Commercial App (Onboarding/Admin)", 15, 18, "Frontend/Backend"], ["Partnerships (Auction/Insurers)", 19, 24, "BizDev"], ["Marketing Campaigns", 19, 24, "Marketing"], ["Support & CRM Setup", 20, 24, "Support/CRM"], ["OTA Cadence & Roadmap", 19, 24, "Software/Data"], ["Anon Data Collection", 12, 18, "Data/Privacy"], ["Aggregated Data Products", 19, 24, "Data Biz"]];
+    const leanTasks   = [["Schematics + Antenna + Prototypes", 1, 8, "Embedded RF"], ["Bootloader/OTA + IMU + Deep\u2011sleep", 1, 8, "Firmware/IoT"], ["Cross\u2011platform App + Pairing", 2, 7, "Mobile/UX"], ["Anchoring Pipeline + APIs", 4, 8, "Cloud/Blockchain"], ["Quantum\u2011resilient Crypto Survey", 4, 10, "Quantum Security"], ["QA & Environmental Tests", 9, 11, "QA/Field"], ["Pilots & Feedback Loops", 10, 14, "QA/Field"], ["Compliance: DPIA/CE/Pentest", 10, 18, "Compliance/Cert"], ["Cloud Hardening + Admin Console", 15, 18, "Cloud/Blockchain"], ["Onboarding/Billing UX", 15, 18, "Mobile/UX"], ["GTM Partnerships", 19, 24, "BizDev/Partnerships"], ["Tier\u20111 Support & OTA cadence", 19, 24, "Firmware/IoT"]];
+    const ultraTasks  = [["Embedded: RF + Bootloader/OTA + Power", 1, 8, "Embedded Systems (RF+FW)"], ["Product Software: App + Anchoring API", 2, 9, "Product Software (Mobile+Cloud)"], ["Quantum Advisory (PQC + Threat Model)", 4, 7, "Quantum Security (advisory)"], ["QA/Field: Tests + Pilots", 9, 14, "QA/Field & Ops"], ["Compliance: DPIA + CE", 10, 18, "Compliance/Cert (fractional)"], ["Industrialisation (DFM/EVT/DVT brief)", 15, 17, "Embedded Systems (RF+FW)"], ["Product Software: Onboarding/Admin", 15, 18, "Product Software (Mobile+Cloud)"], ["Ops: Tier\u20111 + OTA Fixes", 19, 24, "QA/Field & Ops"]];
+
+    function rolePalette(role){
+      const pal = {
+        "Hardware":"#6FA3E3","Firmware":"#7EC7E5","Mobile":"#C39BD3","Cloud/Blockchain":"#7DE0CB",
+        "RF/Security":"#F5B7B1","QA/Test":"#F8C471","Pilots/Field":"#AED6F1","Compliance":"#F9E79F",
+        "Power":"#76D7C4","Industrial":"#D2B4DE","Cloud/DevOps":"#85C1E9","Frontend/Backend":"#F1948A",
+        "BizDev":"#82E0AA","Marketing":"#F0B27A","Support/CRM":"#AEB6BF","Software/Data":"#AED6F1",
+        "Data/Privacy":"#73C6B6","Data Biz":"#82E0AA",
+        "Embedded RF":"#6FA3E3","Firmware/IoT":"#7EC7E5","Mobile/UX":"#C39BD3","Cloud/Blockchain (Lean)":"#7DE0CB",
+        "QA/Field":"#F8C471","Compliance/Cert":"#F9E79F","BizDev/Partnerships":"#82E0AA","Quantum Security":"#F5B7B1",
+        "Cloud/Blockchain":"#7DE0CB",
+        "Embedded Systems (RF+FW)":"#6FA3E3","Product Software (Mobile+Cloud)":"#7ED6D4",
+        "QA/Field & Ops":"#F8C471","Compliance/Cert (fractional)":"#F9E79F","Quantum Security (advisory)":"#F5B7B1"
+      };
+      return pal[role] || "#cccccc";
+    }
+
+    function renderTotals(){
+      new Chart(document.getElementById('totals').getContext('2d'), {
+        type:'bar',
+        data:{ labels:['Normal','Lean','Ultra‑lean'],
+          datasets:[{label:'Total Budget (€)', data:[totals.Normal, totals.Lean, totals.Ultra],
+          backgroundColor:['#1f77b4','#2ca02c','#d62728']}] },
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+          scales:{ y:{ beginAtZero:true } } }
+      });
+      new Chart(document.getElementById('roi').getContext('2d'), {
+        type:'bar',
+        data:{ labels:['Normal','Lean','Ultra‑lean'],
+          datasets:[{label:'Year‑1 Revenue (€)', data:[roi.Normal,roi.Lean,roi.Ultra],
+          backgroundColor:['#6dd5ed','#84d888','#f5b971']}] },
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+          scales:{ y:{ beginAtZero:true } } }
+      });
+      document.getElementById('kpiPayers').textContent = `${kpis.Normal["Payers in Year 1"]} / ${kpis.Lean["Payers in Year 1"]} / ${kpis.Ultra["Payers in Year 1"]}`;
+      document.getElementById('kpiARPA').textContent  = `€${kpis.Normal["ARPA €/mo"]} / €${kpis.Lean["ARPA €/mo"]} / €${kpis.Ultra["ARPA €/mo"]}`;
+      document.getElementById('kpiChurn').textContent = `${kpis.Normal["Churn %"]}% / ${kpis.Lean["Churn %"]}% / ${kpis.Ultra["Churn %"]}%`;
+      const dN = (roi.Normal - totals.Normal), dL=(roi.Lean - totals.Lean), dU=(roi.Ultra - totals.Ultra);
+      document.getElementById('kpiDelta').textContent = `€${dN.toLocaleString()} / €${dL.toLocaleString()} / ${dU.toLocaleString()}`;
+      document.getElementById('totN').textContent = totals.Normal.toLocaleString('en-GB');
+      document.getElementById('totL').textContent = totals.Lean.toLocaleString('en-GB');
+      document.getElementById('totU').textContent = totals.Ultra.toLocaleString('en-GB');
+    }
+
+    function renderBudgetChart(canvasId, dict){
+      const labels = Object.keys(dict);
+      const values = Object.values(dict);
+      new Chart(document.getElementById(canvasId).getContext('2d'), {
+        type:'bar',
+        data:{ labels, datasets:[{label:'Budget (€)', data: values, backgroundColor: labels.map(l=>rolePalette(l)) }] },
+        options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y',
+          plugins:{legend:{display:false}}, scales:{ x:{ beginAtZero:true } } }
+      });
+    }
+
+    function renderRiskRadar(canvasId, profile){
+      new Chart(document.getElementById(canvasId).getContext('2d'), {
+        type:'radar',
+        data:{ labels: profile.map(x=>x[0]), datasets:[{ label:'Risk (1=low,5=high)', data: profile.map(x=>x[1]),
+        fill:true, backgroundColor:'rgba(255,99,132,0.2)', borderColor:'#ff6384' }] },
+        options:{ responsive:true, maintainAspectRatio:false, scales:{ r:{ suggestedMin:0, suggestedMax:5 } } }
+      });
+    }
+
+    function renderGantt(canvasId, tasks, title){
+      const labels = tasks.map(t=>'• '+t[0]);
+      const roles = [...new Set(tasks.map(t=>t[3]))];
+      const datasets = roles.map(role=>{
+        const data = tasks.map(t=> {
+          if(t[3]!==role) return null;
+          const s = new Date(2025 + Math.floor((t[1]-1)/12), (t[1]-1)%12, 1);
+          const e = new Date(2025 + Math.floor((t[2]-1)/12), (t[2]-1)%12 + 1, 0);
+          return [s,e];
+        });
+        return { label: role, data, borderWidth:1, borderColor:'#111', backgroundColor: rolePalette(role) };
+      });
+      new Chart(document.getElementById(canvasId).getContext('2d'), {
+        type:'bar',
+        data:{ labels, datasets },
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{ title:{display:true,text:title} },
+          indexAxis:'y',
+          scales:{ x:{ type:'time', time:{ unit:'month' }, min:'2025-01-01', max:'2026-12-31' } }
+        }
+      });
+    }
+
+    function renderComparatives(){
+      const ctx = document.getElementById('stackCompare').getContext('2d');
+      const buckets = ['Engineering','QA/Field','Compliance','GTM/Partnerships','Quantum'];
+      function bucketize(dict, scenario){
+        if(scenario==='Normal'){
+          return [
+            (dict.Hardware||0)+(dict.Firmware||0)+(dict.Mobile||0)+(dict["Cloud/Blockchain"]||0)+(dict["Cloud/DevOps"]||0)+(dict["Frontend/Backend"]||0)+(dict.Power||0)+(dict.Industrial||0)+(dict["Software/Data"]||0),
+            (dict["QA/Test"]||0)+(dict["Pilots/Field"]||0),
+            (dict.Compliance||0),
+            (dict.BizDev||0)+(dict.Partnerships||0)+(dict.Marketing||0)+(dict["Support/CRM"]||0),
+            (dict["RF/Security"]||0)
+          ];
+        }
+        if(scenario==='Lean'){
+          return [
+            (dict["Embedded RF"]||0)+(dict["Firmware/IoT"]||0)+(dict["Cloud/Blockchain"]||0)+(dict["Mobile/UX"]||0),
+            (dict["QA/Field"]||0),
+            (dict["Compliance/Cert"]||0),
+            (dict["BizDev/Partnerships"]||0),
+            (dict["Quantum Security"]||0)
+          ];
+        }
+        return [
+          (dict["Embedded Systems (RF+FW)"]||0)+(dict["Product Software (Mobile+Cloud)"]||0),
+          (dict["QA/Field & Ops"]||0),
+          (dict["Compliance/Cert (fractional)"]||0),
+          0,
+          (dict["Quantum Security (advisory)"]||0)
+        ];
+      }
+      new Chart(ctx, {
+        type:'bar',
+        data:{
+          labels:buckets,
+          datasets:[
+            {label:'Normal', data: bucketize(normalBudget,'Normal'), backgroundColor:'#1f77b4'},
+            {label:'Lean', data: bucketize(leanBudget,'Lean'), backgroundColor:'#2ca02c'},
+            {label:'Ultra‑lean', data: bucketize(ultraBudget,'Ultra'), backgroundColor:'#d62728'}
+          ]
+        },
+        options:{ responsive:true, maintainAspectRatio:false, scales:{ x:{ stacked:true }, y:{ stacked:true, beginAtZero:true } } }
+      });
+
+      const ct = document.getElementById('spend').getContext('2d');
+      const months = Array.from({length:24}, (_,i)=> new Date(2025 + Math.floor(i/12), i%12, 1).toISOString().slice(0,7));
+      function curve(total, bias){
+        const arr=[], n=24; for(let i=0;i<n;i++){ const t=i/(n-1); const s=Math.pow(t,bias); arr.push(s); }
+        const max=arr[arr.length-1]; return arr.map(v=> Math.round(total*v/max));
+      }
+      new Chart(ct, {
+        type:'line',
+        data:{
+          labels:months,
+          datasets:[
+            {label:'Normal (cum €)', data:curve(463200,1.2), borderColor:'#1f77b4', backgroundColor:'rgba(31,119,180,0.12)', fill:true},
+            {label:'Lean (cum €)', data:curve(193400,1.4), borderColor:'#2ca02c', backgroundColor:'rgba(44,160,44,0.12)', fill:true},
+            {label:'Ultra‑lean (cum €)', data:curve(144950,1.6), borderColor:'#d62728', backgroundColor:'rgba(214,39,40,0.12)', fill:true}
+          ]
+        },
+        options:{ responsive:true, maintainAspectRatio:false, scales:{ y:{ beginAtZero:true } } }
+      });
+    }
+
+    const risksN = [['Complexity/Overheads',3],['Time‑to‑Market',2],['Compliance',2],['Pilot Conversion',2],['Security',2]];
+    const risksL = [['Resource Load',3],['Time‑to‑Market',3],['Compliance',2],['Pilot Conversion',3],['Security',3]];
+    const risksU = [['Resource Bottlenecks',4],['Time‑to‑Market',3],['Compliance',2],['Pilot Conversion',3],['Security',3]];
+
+    window.addEventListener('DOMContentLoaded', ()=>{
+      renderTotals();
+      renderBudgetChart('budNormal', normalBudget);
+      renderBudgetChart('budLean',   leanBudget);
+      renderBudgetChart('budUltra',  ultraBudget);
+
+      renderRiskRadar('riskNormal', risksN);
+      renderRiskRadar('riskLean',   risksL);
+      renderRiskRadar('riskUltra',  risksU);
+
+      renderGantt('ganttNormal', normalTasks, 'Normal Scenario');
+      renderGantt('ganttLean',   leanTasks,   'Lean Scenario');
+      renderGantt('ganttUltra',  ultraTasks,  'Ultra‑lean Scenario');
+
+      renderComparatives();
+    });
+  </script>
+</body>
+</html>
