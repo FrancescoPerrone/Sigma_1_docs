@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sigma‑1 Report</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Import Chart.js for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+  <!-- Import MathJax for LaTeX rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{
+      /* Adopt the colour palette from the provided template */
+      --bg:#f9fafb; --text:#1b1f24; --muted:#6b7280; --primary:#1d4ed8; --primary2:#0ea5e9;
+      --card:#ffffff; --border:#e5e7eb; --accent:#111827;
+    }
+    *{box-sizing:border-box}
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--text);
+  /* Use a modern, highly readable sans‑serif font stack */
+  font-family:Inter, Segoe UI, Helvetica Neue, Arial, sans-serif;
+  /* Increase base text size for on‑screen readability */
+  font-size:18px;
+  /* Increase line spacing to improve legibility */
+  line-height:1.8;
+}
+header.hero{
+  background:linear-gradient(120deg, var(--primary), var(--primary2));
+  color:#fff;
+  /* Reduce banner padding to make header less imposing */
+  padding:24px 16px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+    header.hero .wrap{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0 0 8px;font-size:28px}
+    h2{color:var(--accent);margin:0 0 12px;font-size:22px}
+    p.lead{opacity:.95;margin:8px 0 0}
+    .section{max-width:900px;margin:0 auto;padding:24px 20px;border-bottom:1px solid var(--border)}
+    /* Ensure adequate spacing and consistent width for all sections */
+    .section{
+      max-width:900px;
+      margin:0 auto;
+      padding:24px 20px;
+      border-bottom:1px solid var(--border);
+    }
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
+    .stickybar{position:sticky;top:0;background:#ffffffcc;backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:8px 16px;z-index:9}
+    .pills{display:flex;gap:8px;flex-wrap:wrap}
+    .pills button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:600}
+    .pills button.active{background:#111827;border-color:#111827;color:#fff}
+    table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+    th,td{border-bottom:1px solid var(--border);padding:8px 10px;text-align:left}
+    th{background:#f3f4f6;font-weight:600}
+    /* Adjust default list and paragraph spacing for better readability */
+    ul{
+      padding-left:24px;
+      margin:0 0 20px;
+    }
+    li{
+      margin-bottom:10px;
+    }
+    p{
+      margin:0 0 20px;
+    }
+    .chart{width:100%;height:320px}
+    .btn-link{background:#fff;color:var(--accent);font-weight:600;padding:8px 14px;border-radius:10px;border:2px solid var(--accent);text-decoration:none;white-space:nowrap;display:inline-block}
+    .btn-link:hover{background:var(--accent);color:#fff}
+    /*
+     * Reuse the call‑to‑action styling from the executive report. These classes match the
+     * “View Full Gantt” button in index.html: a white pill with dark text and a dark
+     * border that inverts on hover. They are defined here to avoid external
+     * dependencies and can be reused by any additional top‑right buttons.
+     */
+    .gantt-btn{background:#fff;color:#111827;font-weight:700;padding:8px 14px;border-radius:10px;border:2px solid #111827;text-decoration:none;white-space:nowrap;display:inline-block}
+    .gantt-btn:hover{background:#111827;color:#fff}
+    /* Container to align multiple header buttons horizontally */
+    .button-group{display:flex;gap:12px;flex-wrap:wrap}
+    /* Override bold text to normal weight for readability */
+    strong{font-weight:normal}
+    /* Hide citation markers that appear as  for a cleaner reading experience */
+    .citation{display:none}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Sigma‑1 Market Opportunity, Customer Segmentation and Go‑to‑Market Strategy</h1>
+        <p class="lead">Produced by Francesco Perrone, Reviewed and Apporved by Enrico Perrone and Antonio Herrera Martin.</p>
+      </div>
+      <!-- Top‑right call‑to‑action buttons: Italian translation and Market Data.
+           The layout mirrors the "View Full Gantt" button in the executive report. -->
+      <div class="button-group">
+        <a href="market_size_report_it.html" class="btn-link">Italiano</a>
+      </div>
+    </div>
+  </header>
+  <!-- Sticky navigation bar -->
+  <div class="stickybar">
+    <div class="pills">
+      <button class="active" onclick="document.getElementById('exec').scrollIntoView({behavior:'smooth'})">Executive Summary</button>
+      <button onclick="document.getElementById('market').scrollIntoView({behavior:'smooth'})">Market Figures</button>
+      <button onclick="document.getElementById('method').scrollIntoView({behavior:'smooth'})">Methodology</button>
+      <button onclick="document.getElementById('segmentation').scrollIntoView({behavior:'smooth'})">Customer Segmentation</button>
+      <button onclick="document.getElementById('gtm').scrollIntoView({behavior:'smooth'})">GTM Strategy</button>
+      <button onclick="document.getElementById('monetization').scrollIntoView({behavior:'smooth'})">Monetization</button>
+      <button onclick="document.getElementById('research').scrollIntoView({behavior:'smooth'})">Research & Quantum</button>
+      <button onclick="document.getElementById('conclusion').scrollIntoView({behavior:'smooth'})">Conclusion</button>
+    </div>
+  </div>
+
+  <!-- Executive Summary Section -->
+  <section id="exec" class="section">
+    <h2>Executive Summary</h2>
+    <p>Sigma‑1 is CogiteQ’s advanced solution for authenticating, certifying ownership, and tracking assets of value. While initially designed for high‑value goods, its scope extends far beyond: Sigma‑1 safeguards anything personal and important that individuals or organizations wish to protect from loss, misuse, or uncertainty. From luxury items to everyday belongings of emotional or practical significance, Sigma‑1 ensures that ownership remains indisputable and recovery is rapid and reliable. Key insights include:</p>
+    <ul>
+      <li><strong>Global art sales</strong> fell to about <strong>CHF 45.7 billion / EUR 49.0 billion in 2024</strong> after reaching <strong>CHF 51.7 billion / EUR 55.3 billion in 2023</strong>. Public auctions account for roughly <strong>CHF 3.3 billion / EUR 3.6 billion</strong> of these sales, with private sales adding <strong>CHF 1.2 billion / EUR 1.3 billion</strong>. Christie’s and Sotheby’s generated <strong>CHF 11.3 billion / EUR 12.1 billion</strong> in total art and luxury sales in 2023.</li>
+      <li><strong>Trading card grading</strong> is booming: more than <strong>20 million cards were graded in 2024</strong>, up <strong>16 %</strong> from 2023, and PSA alone graded <strong>over 15.3 million cards</strong>. The high‑value segment of this market is small (cards worth &gt; CHF 397 / EUR 426), but millions of items flow through grading services each year.</li>
+      <li><strong>Luxury resale</strong> is a large, fragmented market. The pre‑owned luxury watch sector alone generated <strong>CHF 19.4 billion / EUR 20.8 billion in 2023</strong>; the second‑hand bag market is about <strong>CHF 5.6 billion / EUR 6.1 billion</strong>; and the second‑hand sneaker market ranges from <strong>CHF 3.6–9.1 billion / EUR 3.8–9.8 billion</strong>. These goods suffer high rates of counterfeiting and theft.</li>
+      <li><strong>Consumer attitudes toward fakes</strong> remain permissive: Entrupy’s 2024 survey found that <strong>71 %</strong> of Europeans consider it acceptable to buy counterfeit goods if the originals are too expensive and <strong>26 %</strong> of 15–24‑year‑olds intentionally purchased counterfeits. This reinforces the need for authentication.</li>
+    </ul>
+    <p>Using conservative risk and adoption assumptions, Sigma‑1’s serviceable addressable market (SAM) is estimated at about <strong>CHF 1.0 billion / EUR 1.0 billion</strong>, yielding a <strong>serviceable obtainable market (SOM) of CHF 10.3–19.1 million / EUR 11.1–20.4 million</strong> if 1–2 % penetration is achieved. Capturing this opportunity requires targeting the right customer segments and executing a disciplined go‑to‑market strategy.</p>
+  </section>
+
+  <!-- Verified Market Figures Section -->
+  <section id="market" class="section">
+    <h2>Verified Market Figures</h2>
+    <p>The following table summarises the latest credible estimates for the markets relevant to Sigma‑1. Each figure is cited to a primary source; where multiple sources disagree, the range is shown.</p>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Sector / Category</th><th>Latest credible size</th><th>Key references</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Global art market</strong></td><td><strong>CHF 51.7 billion / EUR 55.3 billion (2023)</strong> and <strong>CHF 45.7 billion / EUR 49.0 billion (2024)</strong>.</td><td>Art Basel & UBS Art Market Report 2024</td></tr>
+          <tr><td><strong>Auction house sales</strong></td><td><strong>CHF 3.3 billion / EUR 3.6 billion</strong> auction sales and <strong>CHF 1.2 billion / EUR 1.3 billion</strong> private sales at Christie’s in 2024; Christie’s and Sotheby’s together sold <strong>CHF 11.3 billion / EUR 12.1 billion</strong> of art and luxury goods in 2023.</td><td>Christie’s press release 2024; Artlyst report 2023</td></tr>
+          <tr><td><strong>Card grading/TCG market</strong></td><td><strong>20 million cards</strong> graded in 2024 (PSA + CGC + SGC + Beckett); PSA graded <strong>15.34 million cards</strong>. Market research values the TCG sector at <strong>CHF 5.9–7.5 billion / EUR 6.3–8.1 billion</strong>.</td><td>GemRate via Sports Illustrated; Zion Market Research; Verified Market Reports</td></tr>
+          <tr><td><strong>Second‑hand bags</strong></td><td><strong>CHF 5.7 billion / EUR 6.1 billion in 2025</strong>, projected <strong>CHF 9.9 billion / EUR 10.6 billion by 2035</strong>.</td><td>Future Market Insights</td></tr>
+          <tr><td><strong>Sneaker resale</strong></td><td><strong>CHF 9.1 billion / EUR 9.8 billion</strong> revenue in 2023; conservative estimate <strong>CHF 3.6 billion / EUR 3.8 billion</strong>.</td><td>RunRepeat; DataIntelo</td></tr>
+          <tr><td><strong>Pre‑owned luxury watches</strong></td><td><strong>CHF 19.4 billion / EUR 20.8 billion in 2023</strong>, projected <strong>CHF 35.8 billion / EUR 38.3 billion by 2030</strong>.</td><td>Grand View Research</td></tr>
+          <tr><td><strong>Fine‑art logistics & insurance</strong></td><td>Logistics market <strong>CHF 2.6 billion / EUR 2.7 billion</strong> in 2024; art insurance <strong>CHF 2.6 billion / EUR 2.8 billion</strong> in 2024.</td><td>BusinessResearchInsights</td></tr>
+          <tr><td><strong>Counterfeit trade prevalence</strong></td><td>Counterfeit and pirated goods represent <strong>2.3 % of world trade</strong> (CHF 371.1 billion / EUR 397.7 billion) and <strong>4.7 % of EU imports</strong>.</td><td>EUIPO–OECD <em>Mapping Global Trade in Fakes 2025</em></td></tr>
+          <tr><td><strong>Consumer acceptance of fakes</strong></td><td>71 % of Europeans see buying counterfeits as acceptable when originals are too expensive; 26 % of consumers aged 15–24 knowingly purchased fakes.</td><td>Entrupy <em>State of the Fake 2024</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Chart container for market segment sizes -->
+    <div class="grid" style="margin-top:16px;">
+      <div class="card"><canvas id="segmentChart" class="chart"></canvas></div>
+      <div class="card"><canvas id="channelChart" class="chart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- Methodology Section -->
+  <section id="method" class="section">
+    <h2>Methodology for Market Sizing</h2>
+    <p>Sigma‑1’s Total Addressable Market (TAM) is built from the sum of high‑value segments across art, collectibles, luxury resale and fine‑art logistics/insurance. A risk‑segmented adoption model is used:</p>
+    <p>\[\text{TAM} = \sum_{i=1}^n \bigl(\text{MarketSize}_i \times \text{RiskSegment}_i \times \text{AdoptionRate}_i\bigr)\]</p>
+    <ul>
+      <li><strong>MarketSize<sub>i</sub></strong> is the verified market value for sector <em>i</em> (see table above).</li>
+      <li><strong>RiskSegment<sub>i</sub></strong> is the fraction of that market that consists of high‑value items vulnerable to fraud or theft. Because counterfeit goods account for roughly <strong>2.3 %</strong> of world trade, risk segments between <strong>2 % and 5 %</strong> are assumed, rising to 100 % for the art‑insurance sector where every item is valuable.</li>
+      <li><strong>AdoptionRate<sub>i</sub></strong> is the share of that risk segment expected to adopt Sigma‑1 within 5–7 years. Adoption rates of <strong>20–40 %</strong> are applied in institutional settings and <strong>10–30 %</strong> for consumer segments.</li>
+    </ul>
+    <p>Applying these assumptions across all sectors yields a <strong>serviceable addressable market (SAM) of approximately CHF 1.0 billion / EUR 1.0 billion</strong>. Capturing <strong>1–2 %</strong> of the SAM results in a <strong>serviceable obtainable market (SOM) of CHF 10.3–19.1 million / EUR 11.1–20.4 million in annual revenues</strong>, consistent with conservative top‑down and bottom‑up analyses.</p>
+  </section>
+
+  <!-- Customer Segmentation Section -->
+  <section id="segmentation" class="section">
+    <h2>Part II – Target Customer Segmentation</h2>
+    <h3>1. Institutional Clients: Auction Houses, Museums, Insurers and Logistics Providers</h3>
+    <p><strong>Who</strong> – Major auction houses (Christie’s, Sotheby’s, Phillips), museums and galleries, fine‑art logistics firms (Brinks, Malca‑Amit), specialist insurers, large insurance companies and luxury car dealerships. These organisations handle a concentrated volume of high‑value works: Christie’s generated <strong>CHF 3.3 billion / EUR 3.6 billion</strong> in auction sales and <strong>CHF 1.2 billion / EUR 1.3 billion</strong> in private sales in 2024.</p>
+    <p><strong>Pain Points</strong> – Provenance disputes, shipping theft, insurance fraud and reputational risk. The EUIPO–OECD estimate that <strong>2.3 %</strong> of goods in world trade are counterfeit, and 71 % of surveyed consumers accept buying fakes when originals are too expensive. For car dealerships, rising high‑tech auto theft and identity fraud are major concerns: <strong>1,020,729</strong> vehicles were stolen in the U.S. in 2023, and around <strong>80,000</strong> vehicles were stolen using fake identities in that year. Dealerships are encouraged to use GPS asset‑tracking systems to alert personnel whenever vehicles move; Sigma‑1’s premium tags offer similar functionality.</p>
+    <p><strong>Product Fit</strong> – A <strong>premium Sigma‑1 device</strong> combining tamper‑evident NFC/BLE with GPS/LoRa tracking and blockchain certificates. Institutions can either tag works permanently (for collections and long‑term loans) or use disposable tags for high‑value shipments. Premium tags priced between <strong>CHF 127.2–151.0 / EUR 136.2–161.8</strong> are justified early on to encourage adoption while maintaining healthy margins. Car dealerships can tag high‑value vehicles to deter theft and provide geofencing alerts.</p>
+
+    <h3>2. Commercial Platforms & Grading Services</h3>
+    <p><strong>Who</strong> – Trading card grading companies (PSA, Beckett, CGC, SGC), resale marketplaces (StockX, GOAT, The RealReal, Chrono24, Vestiaire Collective) and consignment services.</p>
+    <p><strong>Pain Points</strong> – High authentication costs and liability. Platforms like StockX charge sellers a <strong>9 % transaction fee plus a 3 % payment processing fee</strong>. High‑end consignment shops impose staggered commissions: The RealReal pays sellers only <strong>20–85 % of the final sale price</strong>, meaning sellers lose <strong>15–80 %</strong>. These fees reflect the cost of verification and insurance, which Sigma‑1 could help reduce.</p>
+    <p><strong>Product Fit</strong> – A <strong>mid‑tier Sigma‑1 tag</strong> priced between <strong>CHF 39.7–63.6 / EUR 42.6–68.1</strong> with NFC/BLE and a blockchain certificate. Tags could be embedded by grading services at the point of encapsulation or by resale platforms during listing. API integration enables digital certificates and ownership transfer, improving buyer trust and reducing returns.</p>
+
+    <h3>3. Individual Collectors (Long‑Tail Market)</h3>
+    <p><strong>Who</strong> – Enthusiasts owning rare Pokémon/Magic cards, limited‑edition sneakers, luxury watches and handbags. Millions of such collectors exist worldwide; PSA alone graded more than <strong>6.23 million trading card and non‑sports items in 2024</strong>.</p>
+    <p><strong>Pain Points</strong> – Fear of counterfeit swaps, theft and poor resale liquidity. Entrupy’s 2024 survey found that over <strong>70 %</strong> of consumers would consider buying a fake if the original is too expensive, highlighting the scale of counterfeit risk.</p>
+    <p><strong>Product Fit</strong> – An <strong>entry‑level Sigma‑1 tag</strong> (<strong>CHF 4–8 / EUR 5–10</strong>) that provides tamper‑proof NFC authentication linked to a blockchain certificate. Tags can be applied to card slabs, sneaker boxes, watch cases and handbag dust bags. A mobile app enables owners and potential buyers to verify authenticity instantly. Premium upgrades add GPS tracking for items taken to conventions or stored offsite.</p>
+
+    <h3>4. Niche Communities & Ultra‑Rare Items</h3>
+    <p><strong>Who</strong> – Influencers, celebrity collectors, esports personalities and investors who own one‑of‑one sneakers, prototype cards or limited‑edition collaborations. StockX’s 2024 Current Culture Index reports that the platform has <strong>surpassed 60 million lifetime trades and 20 million lifetime buyers</strong>, indicating a vast global community of high‑engagement collectors.</p>
+    <p><strong>Pain Points</strong> – Public reputational risk if an item’s provenance is questioned and liquidity risk if authenticity cannot be proven. Ultra‑rare items often change hands privately, making provenance difficult to establish.</p>
+    <p><strong>Product Fit</strong> – Custom <strong>premium Sigma‑1 packages</strong> priced between <strong>CHF 127.2–151.0 / EUR 136.2–161.8</strong>, with bespoke packages above this range. They include full GPS/LoRa tracking, anti‑jamming, bespoke NFT certificates and concierge support. These packages can be bundled with insurance policies and specialist logistics services.</p>
+  </section>
+
+  <!-- GTM Strategy & Sales Channel Analysis Section -->
+  <section id="gtm" class="section">
+    <h2>Part III – Go‑to‑Market (GTM) Strategy & Sales Channel Analysis</h2>
+    <h3>1. Channel vs. Customer Segment Matrix</h3>
+    <div class="card" style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr><th>Channel</th><th>Target segments</th><th>Key value proposition</th><th>Estimated tag price</th><th>Forecast volumes (annual, 1 % SAM)</th><th>Forecast revenue (annual, 1 % SAM)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Direct institutional sales</strong></td><td>Auction houses, museums, insurers, logistics firms, luxury car dealerships</td><td>Full provenance tracking, tamper alerts, insurance integration</td><td><strong>CHF 127.2–151.0 / EUR 136.2–161.8</strong> (premium)</td><td>≈<strong>17 k</strong> tags (1 % of high‑value art SAM)</td><td>≈<strong>CHF 2.4 M / EUR 2.5 M</strong></td></tr>
+          <tr><td><strong>Platform integration (B2B)</strong></td><td>Grading services (PSA, CGC, SGC), resale platforms (StockX, GOAT, The Real Real, Chrono24)</td><td>Embedded authentication and ownership transfer via API; reduces verification cost</td><td><strong>CHF 39.7–63.6 / EUR 42.6–68.1</strong> (mid‑tier)</td><td>≈<strong>50 k</strong> tags (1 % across cards, bags, sneakers, watches SAM)</td><td>≈<strong>CHF 2.6 M / EUR 2.8 M</strong></td></tr>
+          <tr><td><strong>Direct‑to‑consumer (D2C) online</strong></td><td>Individual collectors of cards, sneakers, watches, handbags</td><td>Affordable authentication for personal items; optional tracking upgrades</td><td><strong>CHF 4–8 / EUR 5–10</strong> (entry‑level)</td><td>≈<strong>1.5 M</strong> tags (long‑tail market outside high‑value segments)</td><td>≈<strong>CHF 9.0 M / EUR 11.3 M</strong><br />(assuming 1.5 M tags × CHF 4–8 / EUR 5–10)</td></tr>
+          <tr><td><strong>Retail & hobby shop distribution</strong></td><td>Card shops, sneaker boutiques, watch/jewelry stores</td><td>Convenience for collectors purchasing protective cases or accessories</td><td><strong>CHF 4–63.6 / EUR 5–68.1</strong></td><td>Included in D2C volumes</td><td>Included in D2C revenues</td></tr>
+          <tr><td><strong>Influencer & community collaborations</strong></td><td>Niche collectors, influencers, limited‑edition releases</td><td>Exclusive, high‑margin packages bundled with experiences</td><td><strong>CHF 127.2–151.0+ / EUR 136.2–161.8+</strong></td><td>Small (hundreds to thousands of tags per year)</td><td><strong>CHF 0.01–0.15 M / EUR 0.01–0.16 M</strong></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px;">*Volume and revenue forecasts are illustrative internal estimates based on selling 1 % of the serviceable addressable market. They assume a premium tag price of CHF 127.2–151.0 / EUR 136.2–161.8 for institutional customers, CHF 39.7–63.6 / EUR 42.6–68.1 for platform integration, and CHF 4–8 / EUR 5–10 for entry‑level D2C tags.</p>
+    </div>
+
+    <h3>2. Priority Channels and Justification</h3>
+    <ol>
+      <li><strong>Direct Institutional Sales (High Priority).</strong> Institutions account for the largest share of Sigma‑1’s SAM (≈CHF 413.2 million / EUR 442.8 million). Premium tags sold directly to auction houses and insurers deliver the highest margins because there is no third‑party commission. Institutional clients also confer credibility and generate recurring demand as they tag new consignments and shipments. The art insurance market alone is worth about <strong>CHF 2.6 billion / EUR 2.8 billion</strong>, and even a small uptake could yield significant revenue.</li>
+      <li><strong>Platform Integration with Grading Services and Marketplaces (Medium Priority).</strong> Platforms like StockX have huge user bases—<strong>more than 60 million lifetime trades and 20 million buyers</strong>—and require robust authentication. However, margins are constrained by revenue sharing and platform fees: StockX charges a <strong>9 % transaction fee plus 3 % payment processing fee</strong> to sellers; The Real Real takes <strong>15–80 %</strong> of the sale price. A white‑label Sigma‑1 service could be priced as a per‑tag fee (CHF 39.7–63.6 / EUR 42.6–68.1) or subscription, offsetting some verification costs.</li>
+      <li><strong>Direct‑to‑Consumer E‑commerce (Medium Priority).</strong> This channel offers scale and high margin because tags can be sold with minimal intermediaries. Marketing costs, however, are significant. Customer acquisition cost (CAC) for niche consumer electronics and collectibles typically ranges from <strong>CHF 4.0–11.9 / EUR 4.3–12.8 per sale</strong> (internal benchmark based on social media advertising rates; no authoritative citation), meaning the contribution margin per CHF 4–8 / EUR 5–10 tag remains healthy. D2C also builds brand awareness among young collectors who might graduate to premium services.</li>
+      <li><strong>Retail & Hobby Shops (Low Priority Initially).</strong> Physical distribution through card shops, sneaker boutiques and jewellers can reach collectors who prefer in‑person shopping. Margins are lower due to retailer mark‑ups, but this channel increases visibility. It should be piloted after online traction is achieved.</li>
+      <li><strong>Influencer & Community Collaborations (Selective High‑Margin).</strong> Partnering with top collectors or streaming personalities to produce limited‑edition tags raises brand profile and allows for premium pricing. The volume is modest but the marketing impact is outsized.</li>
+    </ol>
+
+    <h3>3. Temporal Roadmap</h3>
+    <div class="card" style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Phase</th><th>Time frame</th><th>Key channels & objectives</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Phase 1 – Launch and Validation</strong></td><td><strong>Year 0–1</strong></td><td>Secure pilot projects with 1–2 major auction houses and 1–2 insurers to validate the premium Sigma‑1 device. Integrate with one grading company (e.g., PSA) for a limited run. Launch a D2C pilot via e‑commerce aimed at card collectors, supported by targeted social‑media marketing.</td></tr>
+          <tr><td><strong>Phase 2 – Expansion and Partnerships</strong></td><td><strong>Year 1–3</strong></td><td>Expand institutional contracts to additional auction houses and insurers. Roll out API integrations to major resale platforms such as StockX, Chrono24 and Vestiaire Collective. Scale D2C sales through online marketing and partnerships with hobby shops. Begin collaborating with influencers and attending collector conventions to build community credibility.</td></tr>
+          <tr><td><strong>Phase 3 – Scale and Diversification</strong></td><td><strong>Year 3–5</strong></td><td>Pursue global expansion by adapting to regional regulations and partnering with logistics providers in Asia and Europe. Develop subscription services (e.g., remote monitoring, insurance data feeds). Introduce new form factors for other asset classes (rare automobiles, wine, instruments).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4. Quantitative Indications</h3>
+    <p>Based on the SAM estimates and pricing assumptions, Sigma‑1’s potential performance by channel can be summarised as follows (annual figures, capturing 1 % of SAM):</p>
+    <ul>
+      <li><strong>Institutional clients</strong> – ~17,000 premium tags sold; revenue ≈<strong>CHF 2.4 million / EUR 2.5 million</strong>; gross margin high (&gt;60 %) due to direct sales; CAC per institutional contract estimated at <strong>CHF 7.9–15.9 k / EUR 8.5–17.0 k</strong> (sales team cost). Recurring revenue from replacement tags and additional consignments boosts lifetime value.</li>
+      <li><strong>Platform partnerships</strong> – ~50,000 mid‑tier tags sold; revenue ≈<strong>CHF 2.6 million / EUR 2.8 million</strong>; margins moderate (30–40 %) due to revenue sharing; integration and support costs are front‑loaded. CAC per platform is large (<strong>CHF 39.7–79.5 k / EUR 42.6–85.2 k</strong>) but amortised over high volumes.</li>
+      <li><strong>D2C e‑commerce</strong> – &gt;1.5 million entry‑level tags sold if 1 % of collectors adopt; revenue ≈<strong>CHF 9.0 million / EUR 11.3 million</strong>; gross margin remains high because the tag cost is minimal. CAC estimated at <strong>CHF 4.0–7.9 / EUR 4.3–8.5 per customer</strong> via digital advertising. Upsell opportunities to higher‑tier tags and subscription services.</li>
+      <li><strong>Influencer collaborations</strong> – Hundreds to thousands of premium tags; revenue <strong>CHF 0.01–0.15 million / EUR 0.01–0.16 million</strong>; marketing cost negotiated case by case. High brand‑building value.</li>
+    </ul>
+    <p>These projections highlight that while institutional and platform channels provide credibility and stable revenue, the largest absolute revenue potential lies in the long‑tail consumer market—assuming Sigma‑1 can achieve widespread brand recognition and cost‑effective customer acquisition.</p>
+
+    <h3>5. Risk Assessment</h3>
+    <ul>
+      <li><strong>Platform lock‑in and margin erosion.</strong> Integration with third‑party marketplaces such as StockX and The Real Real could lead to dependency on their policies. Platforms may demand revenue‑sharing or restrict competing authentication services. Moreover, seller fees on StockX (9 % transaction plus 3 % processing) and The Real Real’s extreme commissions (15–80 %) could limit how much Sigma‑1 can charge. Diversifying channels and offering white‑label solutions reduces reliance on any single platform.</li>
+      <li><strong>Regulatory and legal barriers.</strong> Tracking high‑value goods across borders may require compliance with export controls, cultural‑property laws and data‑privacy regulations (e.g., GDPR). Sigma‑1 must ensure that location data and ownership information are handled securely and that digital certificates comply with evolving NFT and blockchain regulations.</li>
+      <li><strong>Technical adoption risk.</strong> Resistance from traditional institutions and collectors may slow adoption. Partnerships with trusted brands (auction houses, grading services) and robust training/support will be essential. Hardware reliability (battery life, signal jamming) is critical; any failure could damage trust.</li>
+      <li><strong>Competitive landscape.</strong> Other authentication technologies exist (e.g., Entrupy’s AI scanning, proprietary tags used by platforms like StockX). Sigma‑1 must differentiate through a combination of tamper‑proof hardware, open blockchain certificates and integration flexibility. Patents and defensible IP strengthen the position.</li>
+      <li><strong>Counterfeit ecosystem adaptation.</strong> As anti‑counterfeit measures improve, counterfeiters adapt. Ongoing R&D and continuous improvement—such as incorporating anti‑jamming, quantum‑secure cryptography or biometric seals—will be required.</li>
+    </ul>
+  </section>
+
+  <!-- Monetization Options Section -->
+  <section id="monetization" class="section">
+    <h2>Part IV – Monetization Options and Business Model Considerations</h2>
+    <p>Sigma‑1’s commercial success hinges not only on who buys the tags and through which channels, but also on <strong>how</strong> the offering is monetised. There are several models under consideration, each with different implications for revenue, user adoption and customer lock‑in:</p>
+    <ol>
+      <li><strong>One‑time purchase</strong> – The simplest model is to sell tags outright at a fixed price. This yields immediate revenue and minimal ongoing obligations. However, it limits recurring income and may deter upgrades if the upfront cost is high. Early versions of Sigma‑1’s entry‑level tag cost very little to manufacture; reselling them for just a few euros still generates strong margins and lowers the barrier to trial.</li>
+      <li><strong>Subscription service</strong> – Under a subscription model, customers pay a periodic fee (monthly or annually) that includes access to the Sigma‑1 platform and sometimes the hardware. This “hardware‑as‑a‑service” approach is increasingly common in IoT. For example, WHOOP, a fitness‑tracking start‑up, transitioned from selling its device for <strong>$500</strong> to offering it as part of a membership subscription when manufacturing costs fell. WHOOP members now pay monthly, annual or biannual fees, and the band is included in the subscription; members can upgrade devices for free when new versions are released. The pivot allowed WHOOP to lower the upfront price, generate recurring revenue and continuously deliver value. A similar model for Sigma‑1 could bundle the tag with ongoing services such as provenance certification, location monitoring, insurance integrations and access to future feature updates.</li>
+      <li><strong>Tag rental or pay‑as‑you‑go</strong> – Inspired by companies like Whoop and audio‑equipment rentals, Sigma‑1 could rent premium tags for limited periods (e.g., for auction consignment or short‑term storage). Users pay only while the item is monitored; once they no longer require service they return or deactivate the tag. This model reduces upfront commitment and may appeal to collectors who need temporary protection for a sale or exhibition. It also allows the company to recoup and redeploy expensive hardware.</li>
+      <li><strong>Concierge and custody services</strong> – Looking further ahead, CogiteQ could develop a high‑touch offering in which Sigma‑1 tags are paired with secure storage and management. Clients would entrust their assets to CogiteQ for safekeeping; the company would provide physical security, insurance handling and continuous monitoring. Such a service would cater to ultra‑high‑net‑worth individuals and institutions. While beyond the scope of the near‑term product roadmap, this option demonstrates the extensibility of the Sigma‑1 platform.</li>
+    </ol>
+    <p>At this stage, <strong>no single model has been finalised</strong>. A hybrid approach is likely: low‑cost entry‑level tags sold outright, premium tags offered via subscription or rental, and additional subscription tiers for services such as geolocation and insurance data feeds. The board should consider running pilot programmes to test pricing sensitivity and retention under different models.</p>
+  </section>
+
+  <!-- Future Research & Quantum Section -->
+  <section id="research" class="section">
+    <h2>Part V – Future Research and Quantum‑Secure Technology</h2>
+    <p>As an R&D‑driven company, CogiteQ invests in emerging technologies that enhance long‑term security and competitiveness. One area of active investigation is <strong>quantum‑secure authentication</strong>. Quantum computers pose a threat to widely used cryptographic algorithms such as RSA and elliptic‑curve cryptography (ECC), prompting researchers and standards bodies (e.g., NIST) to develop <strong>post‑quantum cryptography (PQC)</strong>. Implementing PQC on constrained IoT devices today can be impractical because of larger key sizes and higher computational requirements. Therefore, industry experts advocate for <strong>crypto‑agile design</strong>—building devices that can update or replace cryptographic algorithms as standards evolve.</p>
+    <p>For Sigma‑1, this means architecting tags and the supporting platform so that cryptographic modules can be upgraded without hardware replacement. Incorporating secure hardware components such as <strong>Trusted Platform Modules (TPMs)</strong> or <strong>Secure Elements (SEs)</strong> provides tamper‑resistant key storage and anti‑rollback protection. In parallel, adopting a <strong>hybrid Public Key Infrastructure (PKI)</strong>—using classical algorithms today while preparing to incorporate PQC keys—offers a phased transition path. Industry commentators conclude that crypto‑agility combined with secure hardware and hybrid PKI is the most practical near‑term strategy to balance present‑day performance and future‑proof security.</p>
+    <p>CogiteQ’s research team monitors developments in PQC standards and evaluates candidate algorithms for compatibility with Sigma‑1’s power and processing constraints. Future iterations of the product may integrate quantum‑resistant authentication protocols and stronger key‑management hardware. This ongoing investment will ensure that Sigma‑1 remains a trusted standard as the threat landscape evolves.</p>
+  </section>
+
+  <!-- Conclusion Section -->
+  <section id="conclusion" class="section">
+    <h2>Conclusion</h2>
+    <p>Sigma‑1 sits at the intersection of rising demand for authenticated, secure transactions and growing volumes of high‑value secondary goods. Conservative market sizing—grounded in recent reports—points to a serviceable opportunity of roughly <strong>CHF 0.95 billion / EUR 1.0 billion</strong>, with a near‑term obtainable share of <strong>CHF 10.3–19.1 million / EUR 11.1–20.4 million</strong> if 1–2 % penetration is achieved. The path to capture this value is clear: focus on premium institutional clients for credibility, integrate with major grading services and resale platforms to scale, and build a direct‑to‑consumer presence to tap the vast long‑tail collector market. A phased GTM plan, disciplined channel selection, and vigilance about platform dependency and regulatory compliance will help Sigma‑1 become the trusted standard for provenance and security in the art, collectibles and luxury markets.</p>
+  </section>
+
+  <!-- Chart.js initialisation -->
+  <script>
+    // Draw bar chart for market segment sizes
+    const segmentCtx = document.getElementById('segmentChart').getContext('2d');
+    new Chart(segmentCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Art Market (2024)', 'Pre-owned Watches (2023)', 'Second-hand Bags (2025)', 'Sneaker Resale (2023)', 'Fine-art Logistics (2024)', 'Art Insurance (2024)'],
+        datasets: [{
+          label: 'Market size (CHF billions)',
+          data: [45.7, 19.4, 5.7, 9.1, 2.6, 2.6]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+    // Draw bar chart for revenue by channel
+    const channelCtx = document.getElementById('channelChart').getContext('2d');
+    new Chart(channelCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Institutional', 'Platform', 'D2C', 'Influencer'],
+        datasets: [{
+          label: 'Forecast revenue (CHF millions)',
+          data: [2.4, 2.6, 9.0, 0.15]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
+</body>
+</html>

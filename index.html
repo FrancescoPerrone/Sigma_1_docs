@@ -37,6 +37,12 @@ details summary{cursor:pointer;font-weight:600}
 .chart{width:100%;height:320px}
 .gantt-btn{background:#fff;color:#111827;font-weight:700;padding:8px 14px;border-radius:10px;border:2px solid #111827;text-decoration:none;white-space:nowrap}
 .gantt-btn:hover{background:#111827;color:#fff}
+  /* Container for top-right buttons */
+  .button-group{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
 @media(max-width:800px){
   .grid{grid-template-columns:1fr}
   .kpi{grid-template-columns:repeat(2,1fr)}
@@ -50,7 +56,11 @@ details summary{cursor:pointer;font-weight:600}
         <h1>CogiteQ — Strategic Marketing Plan</h1>
         <p class="lead">Executive presentation mapped to Gantt scenarios (Normal, Lean, Ultra‑lean), scrollable and interactive.</p>
       </div>
-      <a id="ganttLink" class="gantt-btn" href="#" target="_blank" rel="noopener">View Full Gantt</a>
+      <!-- Group multiple top-right call-to-action buttons -->
+      <div class="button-group">
+        <a id="ganttLink" class="gantt-btn" href="#" target="_blank" rel="noopener">View Full Gantt</a>
+        <a id="marketLink" class="gantt-btn" href="#" target="_blank" rel="noopener">Market Data</a>
+      </div>
     </div>
   </header>
 
@@ -159,6 +169,14 @@ details summary{cursor:pointer;font-weight:600}
       const a = document.getElementById('ganttLink');
       a.href = (location.protocol === 'file:' ? localURL : webURL);
       a.title = (location.protocol === 'file:' ? 'Open local Gantt file' : 'Open repository Gantt file');
+      // Configure Market Data link following the same pattern
+      const localMarketURL = "market_size_report.html";
+      const webMarketURL   = "market_size_report.html";
+      const mLink = document.getElementById('marketLink');
+      if(mLink){
+        mLink.href  = (location.protocol === 'file:' ? localMarketURL : webMarketURL);
+        mLink.title = (location.protocol === 'file:' ? 'Open local Market Data report' : 'Open repository Market Data report');
+      }
     })();
 
     const normalBudget = {"Hardware": 44000, "Firmware": 41600, "Mobile": 50000, "Cloud/Blockchain": 46800, "RF/Security": 15600, "QA/Test": 12600, "Pilots/Field": 19000, "Compliance": 24000, "Power": 15000, "Industrial": 15000, "Cloud/DevOps": 20800, "Frontend/Backend": 20000, "BizDev": 27000, "Partnerships": 21500, "Marketing": 28800, "Support/CRM": 10500, "Software/Data": 24000, "Data/Privacy": 14400, "Data Biz": 12600};
