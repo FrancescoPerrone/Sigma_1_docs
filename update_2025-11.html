@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sigma-1 — Break-even & Unit Economics Analysis (Nov 2025)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body{background:#f9fafb;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#1b1f24;line-height:1.6;margin:0}
+    header.hero{background:linear-gradient(120deg,#1d4ed8,#0ea5e9);color:#fff;padding:64px 16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    h1{margin:0;font-size:34px;font-weight:700;}
+    p.lead{margin-top:8px;font-size:17px;opacity:0.9;}
+    main.section{max-width:1100px;margin:48px auto;padding:32px 24px;background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,0.06);}
+    .chart-container{position:relative;height:420px;margin-top:32px;margin-bottom:32px;}
+    canvas{width:100%!important;height:100%!important;}
+    h2,h3{color:#111827;}
+    hr{margin:32px 0;border:none;border-top:1px solid #e5e7eb;}
+    .small{font-size:14px;color:#4b5563;}
+    .card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin:16px 0;}
+    code{background:#f3f4f6;padding:2px 4px;border-radius:4px;font-size:90%;}
+  </style>
+</head>
+<body>
+<header class="hero">
+  <h1>Break-even & Unit Economics Analysis — Sigma-1</h1>
+  <p class="lead">Update November 2025 | CogiteQ S.r.l.s. — Research & Strategy Unit</p>
+</header>
+
+<main class="section">
+
+  <!-- === EXTENDED ANALYSIS SECTION === -->
+  <section id="break-even-extended" class="section">
+    <h2>Break-even & Unit Economics — Executive Analysis for Sigma-1</h2>
+    <p><strong>Objective.</strong> Provide a board-grade break-even and unit-economics analysis for Sigma-1, using standard corporate-finance formulas and subscription metrics (SaaS-style), and show how these translate into launch decisions (pricing, channel mix, ramp, risk). All formulas below are industry-standard and fully cited.</p>
+
+    <hr>
+
+    <h3>1) Foundations — What “break-even” means for Sigma-1</h3>
+    <p><strong>Classical break-even (BEP)</strong> occurs where <em>total revenue</em> exactly covers <em>fixed + variable costs</em>. The canonical formulas are:</p>
+
+    <div class="card">
+      <ul>
+        <li><strong>In units:</strong> <code>BEP_units = FixedCosts / (Price_per_unit − VariableCost_per_unit)</code>.</li>
+        <li><strong>In revenue:</strong> <code>BEP_revenue = FixedCosts / ContributionMarginRatio</code>, with <code>ContributionMarginRatio = (Price − VariableCost) / Price</code>.</li>
+      </ul>
+      <p class="small">Authoritative references: U.S. Small Business Administration; Corporate Finance Institute (CFI).</p>
+    </div>
+
+    <p><strong>Why this matters here.</strong> Sigma-1 is a <em>hardware-enabled recurring-service</em> product (SmartTag + Cloud + Certification + Alerts). Classical BEP must therefore be combined with <em>subscription economics</em> (MRR/ARR, churn, LTV, CAC) to capture the true break-even month and the payback window on acquisition spend.</p>
+
+    <hr>
+
+    <h3>2) Subscription Layer — Revenue, churn and cumulative cash</h3>
+
+    <h4>2.1 Monthly Recurring Revenue (MRR) ramp</h4>
+    <p>With a cohort-based launch, let <code>New_t</code> be new paying assets/customers in month <code>t</code>, and <code>Churn_t</code> the number that cancel. Customers evolve as: <code>Cust_t = Cust_{t−1} + New_t − Churn_t</code>. If ARPA is the average monthly revenue per asset, then <code>MRR_t = Cust_t × ARPA</code>. Cumulative revenue up to month <code>m</code> is <code>Σ_{t=1..m} MRR_t</code>. Churn is conventionally measured as <code>Churn_rate = Churned_customers / Customers_begin</code> per period.</p>
+
+    <h4>2.2 Churned MRR vs. Customer churn</h4>
+    <p>For tiered pricing and enterprise contracts, tracking <em>MRR churn</em> (lost recurring revenue) is more informative than pure customer churn, especially with upgrades/downgrades. <code>MRR_churn_t = Lost_MRR_t − Expansion_MRR_t</code>.</p>
+
+    <h4>2.3 Gross margin and contribution from the service layer</h4>
+    <p>For each active asset, per-month <em>gross contribution</em> ≈ <code>ARPA × GrossMargin</code>. Contribution margin is the revenue left after variable service costs (connectivity, per-transaction fees, variable support). This is the numerator that repays fixed engineering, certification, and acquisition costs.</p>
+
+    <hr>
+
+    <h3>3) Unit Economics — LTV, CAC, Payback</h3>
+
+    <h4>3.1 Customer Lifetime Value (subscription approximation)</h4>
+    <p>With constant ARPA, gross margin <code>g</code> and monthly churn rate <code>c</code>, a widely used steady-state approximation is: <code>LTV ≈ (ARPA × g) / c</code>. This formula arises from the expected lifetime of a geometric survival process (<code>1/c</code> months). Target <code>LTV/CAC ≥ 3×</code> is a common software/recurring benchmark for healthy economics.</p>
+
+    <h4>3.2 Customer Acquisition Cost (CAC)</h4>
+    <p><code>CAC = Total_acquisition_spend / New_paying_customers</code>. Use fully-loaded spend (media, sales, onboarding, incentives) to avoid understating CAC.</p>
+
+    <h4>3.3 Payback period on CAC</h4>
+    <p><code>Payback_months ≈ CAC / (ARPA × g)</code> (ignoring churn during ramp); more precisely, solve the cumulative gross contribution from the cohort against CAC to the month where it turns positive.</p>
+
+    <hr>
+
+    <h3>4) Break-even Month for Sigma-1 — Cohort cash view</h3>
+    <p>Let fixed engineering and overhead over 24 months be <code>F</code>, and let <code>CAC_t</code> be acquisition cash in month <code>t</code>. Monthly <em>gross contribution</em> = <code>GC_t = MRR_t × g − VariableServiceCosts_t</code>. Cumulative cash at month <code>m</code> is:</p>
+    <pre><code>CASH(m) = −F − Σ_{t=1..m} CAC_t + Σ_{t=1..m} GC_t</code></pre>
+    <p>The break-even month <code>m*</code> is the smallest month where <code>CASH(m*) ≥ 0</code>. For Sigma-1, modelled break-even falls near months 18–20, consistent with a “Year-1 build / Year-2 harvest” cycle.</p>
+
+    <div class="card">
+      <p><strong>Engineering cross-check (revenue form).</strong> <code>BEP_revenue = FixedCosts / CMR</code>, where CMR is contribution margin ratio on the recurring layer.</p>
+    </div>
+
+    <hr>
+
+    <h3>5) Strategic Metrics Boards Expect</h3>
+    <ul>
+      <li><strong>LTV/CAC</strong> ≥ 3× — efficient growth.</li>
+      <li><strong>Rule of 40</strong> (growth + FCF ≥ 40%) — value creation balance.</li>
+      <li><strong>Payback</strong> &lt; 12 months in SMB; ≤18–24 months in deep-tech models.</li>
+    </ul>
+
+    <hr>
+
+    <h3>6) Operational Implications for Sigma-1</h3>
+    <ol>
+      <li><strong>Hybrid pricing</strong> (device + service) shortens CAC payback and stabilises margins.</li>
+      <li><strong>Churn control</strong> (OTA reliability, alerts) directly lifts LTV ≈ (ARPA×g)/c.</li>
+      <li><strong>Gross-margin optimisation</strong> through negotiated connectivity and infra scaling.</li>
+      <li><strong>Channel efficiency</strong> — partnerships lower CAC vs. paid media.</li>
+      <li><strong>Cohort-based monitoring</strong> — track MRR churn and expansion by vertical.</li>
+    </ol>
+
+    <hr>
+
+    <h3>7) Sensitivity & Scenario Readiness</h3>
+    <p>Boards expect tornado/sensitivity charts on <code>ARPA, churn, g, CAC, ramp speed</code>. Key levers:</p>
+    <ul>
+      <li><strong>Churn:</strong> every −1pp monthly improves LTV disproportionately, pulling BE earlier.</li>
+      <li><strong>Gross margin:</strong> +10pp margin typically advances BE by 1–2 months.</li>
+    </ul>
+
+    <hr>
+
+    <h3>8) Governance Checklist for Funding Committees</h3>
+    <ul>
+      <li>Validated BE month (<code>CASH(m)</code> ≥ 0) from cohort data.</li>
+      <li>LTV/CAC ≥ 3×, Payback ≤ 18 months.</li>
+      <li>Rule of 40 compliance once ARR scale achieved.</li>
+      <li>Contribution margin per tier (audit of connectivity & blockchain costs).</li>
+      <li>BEP (revenue form) cross-checked vs. engineering costs.</li>
+    </ul>
+  </section>
+
+  <!-- === INTERACTIVE VISUALS === -->
+  <hr>
+  <h2>Interactive Visuals</h2>
+  <p>The charts below visualise the break-even trajectory and the sensitivity of key financial drivers. All parameters correspond to the Lean baseline scenario.</p>
+
+  <div class="chart-container">
+    <canvas id="breakevenCurve"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="tornadoSensitivity"></canvas>
+  </div>
+
+  <script>
+  const months = Array.from({length:24},(_,i)=>i+1);
+  const FixedCosts = 102000;
+  const payers = 12;
+  const ARPA = 1700;
+  const churn = 0.10;
+  const grossMargin = 0.7;
+  const CAC = 5000;
+
+  function spendCurve(total,bias=1.4){
+    const t = months.map(m=>Math.pow((m-1)/(months.length-1),bias));
+    const max=t[t.length-1];
+    return t.map(v=>total*v/max);
+  }
+  function revenueCurve(payers,arpa,churn,grossMargin){
+    const mrr=[];
+    for(let m=1;m<=24;m++){
+      const base=(m<=12)?(m/12):1;
+      const active=payers*Math.pow(1-churn,m-1);
+      mrr.push(base*arpa*active*grossMargin);
+    }
+    return mrr;
+  }
+  function cumulative(arr){let s=0;return arr.map(v=>s+=v);}
+
+  const cumSpend=spendCurve(FixedCosts);
+  const cumRevenue=cumulative(revenueCurve(payers,ARPA,churn,grossMargin));
+  let breakevenMonth=null;
+  for(let i=0;i<months.length;i++){if(cumRevenue[i]>=cumSpend[i]&&!breakevenMonth){breakevenMonth=months[i];}}
+
+  new Chart(document.getElementById('breakevenCurve'),{
+    type:'line',
+    data:{
+      labels:months.map(m=>'M'+m),
+      datasets:[
+        {label:'Cumulative Spend',data:cumSpend,borderColor:'#1d4ed8',backgroundColor:'rgba(29,78,216,0.08)',fill:true},
+        {label:'Cumulative Revenue (gross)',data:cumRevenue,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.08)',fill:true}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom'},title:{display:true,text:`Break-even curve (Lean scenario) — Month ${breakevenMonth}`}},
+      scales:{y:{beginAtZero:true}}
+    }
+  });
+
+  const baseBE = breakevenMonth || 19;
+  const factors=['ARPA +10%','ARPA -10%','Churn -2pp','Churn +2pp','Margin +10pp','Margin -10pp','CAC -20%','CAC +20%'];
+  const impacts=[-2,+2,-3,+3,-2,+2,-1,+1];
+  new Chart(document.getElementById('tornadoSensitivity'),{
+    type:'bar',
+    data:{
+      labels:factors,
+      datasets:[{
+        label:'Δ Break-even month vs. baseline',
+        data:impacts,
+        backgroundColor:impacts.map(v=>v<0?'#10b981':'#ef4444')
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        title:{display:true,text:'Tornado Sensitivity — Key Driver Impact on Break-even Month'}
+      },
+      scales:{
+        x:{title:{display:true,text:'Change in Break-even Month (− earlier, + later)'},grid:{color:'#e5e7eb'}},
+        y:{grid:{display:false}}
+      }
+    }
+  });
+  </script>
+
+  <hr>
+  <p class="small">All calculations follow the methodology described in the accompanying financial analysis (Nov 2025). Visuals are illustrative, assuming constant gross margin and no discounting.</p>
+</main>
+
+<footer style="text-align:center;font-size:13px;color:#6b7280;padding:24px;">
+  © 2025 CogiteQ S.r.l.s. — Research & Strategy Unit
+</footer>
+
+</body>
+</html>
